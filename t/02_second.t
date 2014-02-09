@@ -14,7 +14,7 @@ my $tempdir = tempdir CLEANUP => 1;
 my $app = builder {
     enable 'AccessLog::RotateLogs',
         logfile => "$tempdir/%Y%m%d_%H%M%S.log",
-        maxage => 10000, rotationtime => 1;
+        rotationtime => 1;
     sub { [200, [], ['hello']] };
 };
 

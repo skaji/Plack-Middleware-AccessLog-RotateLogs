@@ -31,6 +31,7 @@ For File::RotateLogs:
 
 Note that if the offset is omitted,
 it is set to appropriate value for current timezone.
+In addtion, the maxage defaults to 60 \* 60 \* 24 \* 30.
 
 # SEE ALSO
 

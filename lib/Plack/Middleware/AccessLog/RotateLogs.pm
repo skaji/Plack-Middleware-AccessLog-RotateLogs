@@ -16,10 +16,14 @@ sub prepare_app {
         my @t = localtime;
         Time::Local::timegm(@t) - Time::Local::timelocal(@t);
     };
-    my %other = map { defined $self->{$_} ? ($_ => $self->{$_}) : () }
-                qw(logfile linkname rotationtime maxage sleep_before_remove);
+    my $maxage = $self->{maxage} || 60 * 60 * 24 * 30;
 
-    my $logs = File::RotateLogs->new(offset => $offset, %other);
+    my %other = map { defined $self->{$_} ? ($_ => $self->{$_}) : () }
+                qw(logfile linkname rotationtime sleep_before_remove);
+
+    my $logs = File::RotateLogs->new(
+        offset => $offset, maxage => $maxage, %other
+    );
     $self->logger(sub { $logs->print(@_) });
     $self->SUPER::prepare_app(@arg);
 }
@@ -63,6 +67,7 @@ For File::RotateLogs:
 
 Note that if the offset is omitted,
 it is set to appropriate value for current timezone.
+In addtion, the maxage defaults to 60 * 60 * 24 * 30.
 
 =head1 SEE ALSO
 
